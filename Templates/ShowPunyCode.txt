@@ -1,6 +1,6 @@
-# Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
-# Help protect from character 'spoofing' eg:
-#	xn--80ak6aa92e.com -> аррӏе.com
-#	[IDN homograph attacks](https://www.xudongz.com/blog/2017/idn-phishing/)
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Help protect from character 'spoofing' eg:
+//	xn--80ak6aa92e.com -> аррӏе.com
+//	[IDN homograph attacks](https://www.xudongz.com/blog/2017/idn-phishing/)
 
 "network.IDN_show_punycode", true

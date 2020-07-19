@@ -1,17 +1,22 @@
 ﻿#requires -version 4
 <#
 .SYNOPSIS
-  Customize Firefox Pref.js file to your needs
+  Customize Firefox Settings files to your needs
 
 .DESCRIPTION
-  This script allows you to modify you pref.js file to your needs at once using a preset files. 
+  This script allows you to modify your user.js or prefs.js files to your needs using template files. 
   It creates a backup of your current configuration file into the profile folder and will not prompt you for writing confirmation.
 
-  It is recommended to stop Firefox before running this script, otherwise the script will take care of that (Gently first, and with force after 5 seconds). 
+  It is mandatory to run the script when Firefox is stopped. We recommend you to close the app before. 
+  This script will looks for running instances and stop them also (Gently first, and with force after 5 seconds). 
 
+  The script will modify existing user preferences and add new ones at the end of the file.
 
 .PARAMETER ConfigModPath
-  You configuration file. Each parameter on a separate line using the exaxt same syntaxe
+  String path configuration file. Each parameter on a separate line using the exaxt same syntaxe
+
+.PARAMETER ModifyPrefsJS
+  Switch to modify prefs.js instead of user.js
 
 .INPUTS
   The file format for the ConfigModPath file is the following :
@@ -21,26 +26,27 @@
   "network.proxy.no_proxies_on", "localhost,    127.0.0.1,10.0.0.0/8,192.0.0.0/8"
 
   Each line is formated the same way it is into the Pref.js file except is does not include the "user_pref(" opening statement and the ");" closing statement.
-  Existing paramters will be modified, other modification will be added at the end of the file.
 
-  Please leaves double quotes where they are. 
-  You can add comments to your Config File by adding the hash (#) character at the begining of each line.
+  Please leaves double quotes in place as it defines whether it defines a string value. 
+  You can add comments to your Config File by adding double forward slashes (//) at the begining of each line.
   Empty lines will be skipped.
   
 
 .OUTPUTS
-  Writes modified configuration to Prefs.js file in your default Firefox profile
+  Writes modified configuration to User.js or Prefs.js file in your default Firefox profile
 
 .NOTES
-  Version:        1.0
+  Version:        1.1
   Author:         FingersOnFire
   Creation Date:  2020-07-19
-  Purpose/Change: Initial script development
+  Purpose/Change: Add ModifyPrefsJS switch. Use double forward slash for comments instead of hash (#)
 
 .EXAMPLE
-  Set-FirefoxPreferences.ps1 -ConfigModPath C:\Temp\ConfigMod.txt
-  
-  Reads the file in the path ConfigModPath and apply changes to your default Firefox profile
+  Set-FirefoxPreferences.ps1 -ConfigModPath C:\Temp\ConfigMod.txt  
+  Reads the file in the path ConfigModPath and apply changes to your default Firefox profile User.js file
+
+  Set-FirefoxPreferences.ps1 -ConfigModPath C:\Temp\ConfigMod.txt -ModifyPrefsJS
+  Reads the file in the path ConfigModPath and apply changes to your default Firefox profile Prefs.js
 #>
 
 #---------------------------------------------------------[Script Parameters]------------------------------------------------------
@@ -169,7 +175,7 @@ Write-Host "Looping through modifications..."
 foreach($ConfModLine in $ConfMod){
 
     # Skipping commented or empty lines
-    if(($ConfModLine.StartsWith("#")) -or ($ConfModLine -eq "")){
+    if(($ConfModLine.StartsWith("//")) -or ($ConfModLine -eq "")){
         Continue
     }
 
