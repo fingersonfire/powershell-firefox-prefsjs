@@ -47,7 +47,10 @@
 
 Param (
 		[Parameter(Position=0,mandatory=$true)]
-        [string] $ConfigModPath
+        [string] $ConfigModPath,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$ModifyPrefsJS
 )
 
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
@@ -86,9 +89,9 @@ function Stop-Firefox {
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 
 Write-Host
-Write-Host "-------------------------------"
-Write-Host "|Firefox Prefs.js Modification|"
-Write-Host "-------------------------------"
+Write-Host "----------------------------------"
+Write-Host "|Firefox Preferences Modification|"
+Write-Host "----------------------------------"
 
 Write-Host
 Write-Host "Testing Modification File"
@@ -118,28 +121,43 @@ else{
 Write-Host
 Write-Host "Looking for Firefox Preference File"
 $FFPrefsJSPath = Join-Path -Path $FFProfilePath.FullName -ChildPath "prefs.js"
+$FFUserJSPath = Join-Path -Path $FFProfilePath.FullName -ChildPath "user.js"
+$FFSelectedPreferenceFile = ""
 
-if(-not(Test-Path($FFPrefsJSPath))){
-    Write-Host "Could not find file:" $FFPrefsJSPath
-    Write-Host "Exiting now..."
-    exit
+
+if($ModifyPrefsJS){
+    if(-not(Test-Path($FFPrefsJSPath))){
+        Write-Host "Could not find file:" $FFPrefsPath
+        Write-Host "Exiting now..."
+        exit
+    }
+    else{
+        Write-Host "Selected Preference File :" $FFPrefsJSPath
+        Write-Warning "Your are editing the main Prefs.js files"
+        $FFSelectedPreferenceFile = $FFPrefsJSPath
+    }
 }
 else{
-    Write-Host "Selected Preference File :" $FFPrefsJSPath
+    if(-not(Test-Path($FFUserJSPath))){
+        Write-Host "User.js not found:" $FFUserJSPath
+        New-Item -Path $FFProfilePath.FullName -Name "user.js" -ItemType "file" -Value "// Firefox User Preferences`r`n"
+    }
+
+    Write-Host "Selected Preference File :" $FFUserJSPath
+    $FFSelectedPreferenceFile = $FFUserJSPath
 }
 
-# 
-$FFPrefsJSBackupFilename = "prefs" + (get-date).tostring(“yyyy-mm-dd-HH-mm-ss”) + ".js"
-$FFPrefsJSBackupPath = Join-Path -Path $FFProfilePath.Fullname -ChildPath $FFPrefsJSBackupFilename
+# Backup of the selected configuration file
+$FFPrefsBackupPath = $FFSelectedPreferenceFile + "." + (get-date).tostring(“yyyy-mm-dd-HH-mm-ss”) + ".bak"
 
 Write-Host
-Write-Host "Creating a config backup:" $FFPrefsJSBackupPath
-Copy-Item -Path $FFPrefsJSPath -Destination $FFPrefsJSBackupPath
+Write-Host "Creating a config backup:" $FFPrefsBackupPath
+Copy-Item -Path $FFSelectedPreferenceFile -Destination $FFPrefsBackupPath
 
 
 Write-Host
-Write-Host "Reading Firefox config file:" $FFPrefsJSPath
-$FFPrefsJS = (Get-Content $FFPrefsJSPath)
+Write-Host "Reading config file:" $FFSelectedPreferenceFile
+[Array]$FFPrefs = (Get-Content $FFSelectedPreferenceFile)
 
 Write-Host
 Write-Host "Reading modification file:" $ConfigModPath
@@ -160,12 +178,12 @@ foreach($ConfModLine in $ConfMod){
     $ConfID = $ConfModLine.Split(",")[0].Trim().Replace('"', '')
     $NewConfLine = 'user_pref(' + $ConfModLine + ');'
 
-    $lineMatch = Select-String -Path $FFPrefsJSPath -Pattern $ConfID
+    $lineMatch = Select-String -Path $FFSelectedPreferenceFile -Pattern $ConfID
 
     if(($lineMatch -eq "") -or ($lineMatch -eq $null)){
         Write-Host "No Match found for" $ConfID
         Write-Host "Adding new line:" $NewConfLine
-        $FFPrefsJS += $NewConfLine;  
+        $FFPrefs += $NewConfLine;  
     }
     else{
 
@@ -173,11 +191,11 @@ foreach($ConfModLine in $ConfMod){
         Write-Host "Old line:" $lineMatch.Line
         Write-Host "New line:" $NewConfLine
 
-        $FFPrefsJS[$lineMatch.lineNumber - 1] = $NewConfLine
+        $FFPrefs[$lineMatch.lineNumber - 1] = $NewConfLine
     }
 
 }
 
 Write-Host
-Write-Host "Writing content:" $FFPrefsJSPath
-Set-Content $FFPrefsJSPath $FFPrefsJS
+Write-Host "Writing content:" $FFSelectedPreferenceFile
+Set-Content $FFSelectedPreferenceFile $FFPrefs
