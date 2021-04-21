@@ -1,0 +1,4 @@
+// Source : https://proprivacy.com/privacy-service/guides/firefox-privacy-security-guide
+// Disables real time communication. Often use to reveal your real IP address if you are using a VPN.
+
+"media.peerconnection.enabled", false
