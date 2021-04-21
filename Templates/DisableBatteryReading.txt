@@ -1,0 +1,4 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Disable website reading how much battery your mobile device or laptop has.
+
+"dom.battery.enabled", false
