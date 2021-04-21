@@ -1,0 +1,5 @@
+// Source : https://support.mozilla.org/en-US/kb/disable-or-re-enable-pocket-for-firefox
+// Disable Built-in pocket feature
+
+"extensions.pocket.enabled", false
+"extensions.pocket.onSaveRecs", false
