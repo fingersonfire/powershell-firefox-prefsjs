@@ -1,0 +1,4 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Disables recording of visited websites.
+
+"places.history.enabled", false
