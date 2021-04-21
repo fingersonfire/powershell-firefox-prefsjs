@@ -1,0 +1,32 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Disable Google Safe Browsing and malware and phishing protection.
+// Stop sending links and downloading lists from google.	
+// Security risk, but privacy improvement.
+// Note: this list may be incomplete as firefox updates, be sure to search for  "browser.safebrowsing.provider.google*
+// Also simply setting safebrowsing.*.enabled to false should make setting the URL's to blank redundant, but better to be safe.
+// If you see anything pointing google, probably best to nuke it.
+
+"browser.safebrowsing.enabled", false
+"browser.safebrowsing.phishing.enabled", false
+"browser.safebrowsing.malware.enabled", false	
+"browser.safebrowsing.downloads.enabled", false
+"browser.safebrowsing.provider.google4.dataSharing.enabled", blank
+"browser.safebrowsing.provider.google4.updateURL", blank
+"browser.safebrowsing.provider.google4.reportURL", blank
+"browser.safebrowsing.provider.google4.reportPhishMistakeURL", blank
+"browser.safebrowsing.provider.google4.reportMalwareMistakeURL", blank
+"browser.safebrowsing.provider.google4.lists", blank
+"browser.safebrowsing.provider.google4.gethashURL", blank
+"browser.safebrowsing.provider.google4.dataSharingURL", blank
+"browser.safebrowsing.provider.google4.dataSharing.enabled", false
+"browser.safebrowsing.provider.google4.advisoryURL", blank
+"browser.safebrowsing.provider.google4.advisoryName", blank
+"browser.safebrowsing.provider.google.updateURL", blank
+"browser.safebrowsing.provider.google.reportURL", blank
+"browser.safebrowsing.provider.google.reportPhishMistakeURL", blank
+"browser.safebrowsing.provider.google.reportMalwareMistakeURL", blank
+"browser.safebrowsing.provider.google.pver", blank
+"browser.safebrowsing.provider.google.lists", blank
+"browser.safebrowsing.provider.google.gethashURL", blank
+"browser.safebrowsing.provider.google.advisoryURL", blank
+"browser.safebrowsing.downloads.remote.url", blank
