@@ -1,0 +1,6 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Disables geolocation and firefox logging geolocation requests.
+
+"geo.enabled", false
+"geo.wifi.uri", blank
+"browser.search.geoip.url", blank
