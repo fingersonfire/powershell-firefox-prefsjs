@@ -1,0 +1,7 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Link prefetching is when a webpage hints to the browser that certain pages are likely to be visited, 
+// so the browser downloads them immediately so they can be displayed immediately when the user requests
+
+"network.predictor.enabled", false
+"network.dns.disablePrefetch", true
+"network.prefetch-next", false
