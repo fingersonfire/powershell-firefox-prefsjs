@@ -1,0 +1,4 @@
+// Source : https://gist.github.com/0XDE57/fbd302cef7693e62c769
+// Prevent sneaky website from scanning your installed extensions
+
+"plugins.enumerable_names", blank
