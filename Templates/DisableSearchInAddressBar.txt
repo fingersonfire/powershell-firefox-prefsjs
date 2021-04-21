@@ -1,0 +1,5 @@
+// Source : https://support.mozilla.org/en-US/questions/1219899
+// Remove search from address bar.  Often use to avoid search mistake and increase privacy
+
+"keyword.enabled", false
+"browser.urlbar.oneOffSearches", false 
